@@ -2,133 +2,136 @@ import { drawGrid } from "@/utils/grid.js";
 import { drawAxes } from '@/utils/axes.js';
 import { vector } from "@/utils/vec3.js";
 
+
+
 let tex;
 //We can use this to load textures or sounds
 export function preload() {
     let p = new URL(import.meta.url).pathname
     p = p.substring(0, p.lastIndexOf('/') + 1)
-    tex = loadImage(p + 'AmazingWindow.png')
+    tex = loadImage(p + 'Doom_cover_art.jpg')
 }
 
-//Called once when program loads
+let cam;
+
+let Move = vector(0, 0, 0)
+let ot = 0;
+
+let collisionArray = []
+
 export function setup() {
-    camera(300, -200, 700);
-    grid = [
-    [Math.floor(random(0,5)), 2, 5, 4, 3],
-    [1, 1, 1, 1, 1],
-    [0, 3, 1, 2, 1],
-    [3, 3, 1, 1, 1],
-    [5, 0, 4, 2, 3],
-];
-
+    makeBB(165, 195, 200, 200)
+    makeBB(-200,-200,250,10)
+    console.log(collisionArray.length)
 }
 
-let grid = []
-
-//Called every frame
 export function draw(t, dt) {
     background(50, 50, 50);
-    orbitControl();
     ambientLight(80, 60, 80);
     directionalLight(255, 255, 255, 1, 1, -1);
-    //drawGrid(); 
+    drawGrid();
     drawAxes();
-    stroke(0, 0, 0)
-    scale(50)
     push()
-    translate(2, .1, 2)
-    fill(30, 10, 30)
-    box(5.25, .1, 5.25)
+    translate(-200, -125, -200)
+    texture(tex)
+    box(250, 250, 10)
     pop()
+    translate(255, 0, 255)
+    torus(20, 2, 7)
+    translate(-90, -50, -60)
+    box(200, 50, 200)
 
-        for (let x = 0; x < 5; x++) {
-            for (let z = 0; z < 5; z++) {
-                push()
-                translate(x, 0, z)
-                if (grid[x][z] == 0) {
-                }
-                if (grid[x][z] == 1) {
-                    noStroke()
-                    fill(40,40,40)
-                    translate(0,-.05,0)
-                    box(1,.1,1)
-                }
-                if (grid[x][z] == 2) {
-                    skyscraper()
-                }
-                if (grid[x][z] == 3) {
-                    noStroke()
-                    fill(150, 75, 0)
-                    translate(0, -0.2, 0)
-                    cylinder(.05, .4)
-                    translate(0, -0.3, 0)
-                    fill(0, 200, 255)
-                    stroke(0,255,255,50)
-                    strokeWeight(.1)
-                    sphere(.2)
-                }
-                if (grid[x][z] == 4) {
-                    noStroke()
-                    fill(20,20,20)
-                    translate(0, -0.15, 0)
-                    box(.8, .3, .8)
-                    translate(0,-.15,0)
-                    push()
-                    emissiveMaterial(255,50,255)
-                    stroke(0,0,75)
-                    strokeWeight(.5)
-                    box(.7,.3,.7)
-                    pop()
-                    translate(0,-.5,0)
-                    box(.8,.70,.8)
-                    translate(0,-0.4,0)
-                    push()
-                    emissiveMaterial(50,50,255)
-                    stroke(0,0,75)
-                    strokeWeight(.5)
-                    box(.7,.2,.7)
-                    pop()
-                    translate(0,-.25,0)
-                    box(0.8,0.3,0.8)
-                }
-                if ( grid[x][z] == 5 ) {
-                    noStroke()
-                    fill(150,150,150)
-                    translate(0,-1.5,0)
-                    cylinder(.25,3)
-                    translate(0,-1.6,0)
-                    cylinder(1,.2)
-                    translate(0,-0.4,0)
-                    fill(150,150,200,150)
-                    cylinder(1,.6)
-                    fill(150,150,150)
-                    translate(0,-.4,0)
-                    cylinder(1,.2)
+    let oldPosition = vector(Move.x, Move.y, Move.z);
 
-                }
-                pop()
-            }
+    let v = createVector(0, -100);
+    v.rotate(ot);
+    let forward = vector(v.x, 0, v.y);
+    v.rotate(90);
+    let right = vector(v.x, 0, v.y);
+
+    if (keyIsDown(65)) {
+        Move = Move.plus(right.times(-0.05));
+    }
+
+    if (keyIsDown(68)) {
+        Move = Move.plus(right.times(0.05));
+    }
+
+    if (keyIsDown(87)) {
+        Move = Move.plus(forward.times(0.05));
+    }
+
+    if (keyIsDown(83)) {
+        Move = Move.plus(forward.times(-0.05));
+    }
+
+    if (keyIsDown(RIGHT_ARROW)) {
+        ot += 3
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+        ot -= 3
+    }
+
+
+    cam = createCamera()
+    cam.perspective(2 * atan(height / 2 / 800),width / height,0.1 * 100)
+    cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 60, Move.z)
+    cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 60, Move.z + forward.z);
+
+    let collision = checkAllBB(Move.x, Move.z);
+
+    if ( collision != -1 ){
+        console.log("Ouch!")
+        Move = oldPosition
+    }
+
+
+
+
+
+}
+//20,50,20 size
+//165,-50,195 pos
+function makeBB(posx, posz, width, depth) {
+    let posvec = createVector(posx, posz)
+    let negvec = createVector(posx, posz)
+    posvec.x = posx + width / 2 + 30
+    posvec.y = posz + depth / 2 + 30
+    negvec.x = posx - width / 2 - 30
+    negvec.y = posz - depth / 2 - 30
+    collisionArray.push({
+        posvec,
+        negvec
+    });
+}
+
+function checkAllBB(x, y) {
+    for (let i = 0; i < collisionArray.length; i++) {
+        let box = collisionArray[i];
+        if (isInside(x, y, box)) {
+            console.log("collided with box #", i);
+            return i;
         }
+    }
+    return -1;
 }
 
-function skyscraper() {
-    push()
-    translate(0, -1, 0)
-    fill(18, 18, 18)
-    box(1, 2, 1)
-    translate(0, -1, 0)
-    box(.4, .2, .4)
-    cylinder(0.05, 1)
-    translate(0, 1, 0)
-    fill(120, 100, 255)
-    shininess(400)
-    texture(tex);
-    box(1.02, 1.8, 0.8)
-    box(0.8, 1.8, 1.02)
-    pop()
+function isInside(x, y, bb) {
+    if (x < bb.posvec.x && x > bb.negvec.x && y < bb.posvec.y && y > bb.negvec.y) {
+        console.log('YAH')
+        return true;
+    }
+    else {
+        console.log('NAH')
+        return false;
+    }
 }
 
 
+
+
+//THIS SHIT DOESN'T WORK YET I HATE IT!
 
 
 
