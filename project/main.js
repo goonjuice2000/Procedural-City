@@ -5,12 +5,28 @@ import { vector } from "@/utils/vec3.js";
 
 
 let tex;
+let tex2;
+let tex3;
+let tex4;
+let tex5;
+let tex6;
 //We can use this to load textures or sounds
 export function preload() {
     let p = new URL(import.meta.url).pathname
     p = p.substring(0, p.lastIndexOf('/') + 1)
     tex = loadImage(p + 'Doom_cover_art.jpg')
+    tex2 = loadImage(p + 'DirtyMetalWall.png')
+    tex3 = loadImage(p + 'HexagonFloor.png')
+    tex4 = loadImage(p + 'Stone.png')
+    tex5 = loadImage(p + 'fairs.jpg')
+    tex6 = loadImage(p + 'Ceiling.png')
 }
+
+
+//We can use this to load textures or sounds
+
+
+
 
 let cam;
 
@@ -20,26 +36,137 @@ let ot = 0;
 let collisionArray = []
 
 export function setup() {
-    makeBB(165, 195, 200, 200)
-    makeBB(-200,-200,250,10)
+
     console.log(collisionArray.length)
+    makeBB(250, 0, 10, 500)
+    makeBB(-250, 0, 10, 500)
+    //makeBB(0,250,500,10)
+    makeBB(0, -250, 500, 10)
+    makeBB(250,500,10,500)
+    makeBB(0,750,500,10)
+    makeBB(-250,500,10,500)
+    makeBB(-125,250,150,10)
+    makeBB(125,250,150,10)
 }
 
 export function draw(t, dt) {
     background(50, 50, 50);
-    ambientLight(80, 60, 80);
-    directionalLight(255, 255, 255, 1, 1, -1);
+    ambientLight(180, 180, 180);
+    directionalLight(255, 255, 255, 0, 1, 0);
     drawGrid();
     drawAxes();
+    //make the right wall
     push()
-    translate(-200, -125, -200)
-    texture(tex)
-    box(250, 250, 10)
+    translate(250, -150, 0)
+    texture(tex2)
+    rotateX(90)
+    box(10, 500, 300)
     pop()
-    translate(255, 0, 255)
-    torus(20, 2, 7)
-    translate(-90, -50, -60)
-    box(200, 50, 200)
+    //make the left wall
+    push()
+    translate(-250, -150, 0)
+    texture(tex2) 
+    rotateX(-180)
+    box(10, 300, 500)
+    pop()
+    rotateY(90)
+    //make the front wall
+    push()
+    translate(250, -150, 0)
+    texture(tex2)
+    rotateX(90)
+    box(10, 500, 300)
+    pop()
+    //make the top of doorway
+    push()
+    translate(0, -30, 0)
+    translate(-250, -240, 0)
+    texture(tex2)
+    box(11, 150, 500)
+    pop()
+    //makes the sides of doorway
+    push()
+    translate(-250, -90, 150)
+    texture(tex2)
+    rotateX(-180)
+    box(10, 210, 200)
+    rotateX(180)
+    translate(0, 0, -300)
+    rotateX(-180)
+    box(10, 210, 200)
+    pop()
+    rotateY(-90) // copies te room we jst make but without the doorway wall.
+    translate(0, 0, 500)
+    rotateY(180)
+    push()
+    translate(250, -150, 0)
+    texture(tex2)
+    rotateX(90)
+    box(10, 500, 300)
+    pop()
+    push()
+    translate(-250, -150, 0)
+    texture(tex2)
+    rotateX(-180)
+    box(10, 300, 500)
+    pop()
+    rotateY(90)
+    push()
+    translate(250, -150, 0)
+    texture(tex2)
+    rotateX(90)
+    box(10, 500, 300)
+    pop()
+    rotateY(-90)
+    translate(0, 0, 500)
+
+    texture(tex3)
+    textureWrap(REPEAT, REPEAT)
+    beginShape();
+    vertex(5000, 0, 5000, 0, 0);
+    vertex(5000, 0, -5000, 3500, 0)
+    vertex(-5000, 0, -5000, 3500, 3500)
+    vertex(-5000, 0, 5000, 0, 3500)
+    endShape()
+    texture(tex4)
+    beginShape();
+    vertex(250, 0, -80, 0, 0);
+    vertex(250, -50, -80, 30, 0);
+    vertex(130, -50, -50, 30, 30);
+    vertex(130, 0, -50, 0, 30);
+    endShape()
+    beginShape();
+    vertex(130, -50, -50, 0, 0);
+    vertex(130, 0, -50, 30, 0);
+    vertex(130, 0, 50, 30, 30)
+    vertex(130, -50, 50, 0, 30)
+    endShape()
+    beginShape();
+    vertex(130, 0, 50, 0, 0)
+    vertex(130, -50, 50, 30, 0)
+    vertex(250, -50, 80, 30, 30)
+    vertex(250, 0, 80, 0, 30)
+    endShape()
+    beginShape();
+    vertex(250, -50, 80, 0, 0);
+    vertex(130, -50, 50, 50, 0);
+    vertex(130, -50, -50, 50, 50);
+    vertex(250, -50, -80, 0, 50)
+    endShape()
+    texture(tex5)
+    beginShape()
+    vertex(240, -70, -80, 400, 400)
+    vertex(240, -70, 80, 0, 400)
+    vertex(240, -265, 80, 0, 0)
+    vertex(240, -265, -80, 400, 0)
+    endShape()
+    texture(tex6)
+    beginShape();
+    vertex(5000, -300, 5000, 0, 0);
+    vertex(5000, -300, -5000, 3500, 0)
+    vertex(-5000, -300, -5000, 350, 3500)
+    vertex(-5000, -300, 5000, 0, 3500)
+    endShape()
 
     let oldPosition = vector(Move.x, Move.y, Move.z);
 
@@ -75,13 +202,13 @@ export function draw(t, dt) {
 
 
     cam = createCamera()
-    cam.perspective(2 * atan(height / 2 / 800),width / height,0.1 * 100)
-    cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 60, Move.z)
-    cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 60, Move.z + forward.z);
+    cam.perspective(2 * atan(height / 2 / 800), width / height, 0.1 * 100)
+    cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 100, Move.z)
+    cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 100, Move.z + forward.z);
 
     let collision = checkAllBB(Move.x, Move.z);
 
-    if ( collision != -1 ){
+    if (collision != -1) {
         console.log("Ouch!")
         Move = oldPosition
     }
@@ -131,7 +258,7 @@ function isInside(x, y, bb) {
 
 
 
-//THIS SHIT DOESN'T WORK YET I HATE IT!
+//THIS SHIT WORKS NOW I LOVE IT!!!!!s
 
 
 
