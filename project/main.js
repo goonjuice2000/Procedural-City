@@ -23,25 +23,23 @@ let skullorange;
 let dirt;
 //We can use this to load textures or sounds
 export function preload() {
-    let p = new URL(import.meta.url).pathname
-    p = p.substring(0, p.lastIndexOf('/') + 1)
-    doom = loadImage(p + 'Doom_cover_art.jpg')
-    ceiling = loadImage(p + 'SpottyBricks.png')
-    floorspot = loadImage(p + 'StoneFloor.png')
-    floor = loadImage(p + 'StoneFloor2.png')
-    stone = loadImage(p + 'Stone.png')
-    stone2 = loadImage(p + 'ConcreteWall2.png')
-    stone3 = loadImage(p + 'ConcreteWall3.png')
-    spawn = loadImage(p + 'SpawnPoint.png')
-    rails = loadImage(p + 'Rails.png')
-    tiles = loadImage(p + 'Tiles.png')
-    message = loadImage(p + 'Messagee.png')
-    firebackdrop = loadImage(p + 'FireBackdrop.jpg')
-    subtext = loadImage(p + 'AmazingMessage.png')
-    skullred = loadImage(p + 'SkullRed.png')
-    skullblue = loadImage(p + 'SkullBlue.png')
-    skullorange = loadImage(p + 'SkullOrange.png')
-    dirt = loadImage(p + 'Dirt.png')
+    doom = loadImage('Doom_cover_art.jpg')
+    ceiling = loadImage('SpottyBricks.png')
+    floorspot = loadImage('StoneFloor.png')
+    floor = loadImage('StoneFloor2.png')
+    stone = loadImage('Stone.png')
+    stone2 = loadImage('ConcreteWall2.png')
+    stone3 = loadImage('ConcreteWall3.png')
+    spawn = loadImage('SpawnPoint.png')
+    rails = loadImage('Rails.png')
+    tiles = loadImage('Tiles.png')
+    message = loadImage('Messagee.png')
+    firebackdrop = loadImage('FireBackdrop.jpg')
+    subtext = loadImage('AmazingMessage.png')
+    skullred = loadImage('SkullRed.png')
+    skullblue = loadImage('SkullBlue.png')
+    skullorange = loadImage('SkullOrange.png')
+    dirt = loadImage('Dirt.png')
 }
 
 
