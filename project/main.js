@@ -42,11 +42,11 @@ export function setup() {
     makeBB(-250, 0, 10, 500)
     //makeBB(0,250,500,10)
     makeBB(0, -250, 500, 10)
-    makeBB(250,500,10,500)
-    makeBB(0,750,500,10)
-    makeBB(-250,500,10,500)
-    makeBB(-125,250,150,10)
-    makeBB(125,250,150,10)
+    makeBB(250, 500, 10, 500)
+    makeBB(0, 750, 500, 10)
+    makeBB(-250, 500, 10, 500)
+    makeBB(-125, 250, 150, 10)
+    makeBB(125, 250, 150, 10)
 }
 
 export function draw(t, dt) {
@@ -65,7 +65,7 @@ export function draw(t, dt) {
     //make the left wall
     push()
     translate(-250, -150, 0)
-    texture(tex2) 
+    texture(tex2)
     rotateX(-180)
     box(10, 300, 500)
     pop()
@@ -206,11 +206,18 @@ export function draw(t, dt) {
     cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 100, Move.z)
     cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 100, Move.z + forward.z);
 
+    //let newPosition = vector(Move.x, Move.z)
     let collision = checkAllBB(Move.x, Move.z);
-
     if (collision != -1) {
         console.log("Ouch!")
-        Move = oldPosition
+
+        if (checkAllBB(oldPosition.x, Move.z) != -1) {
+            Move = vector(Move.x, Move.y, oldPosition.z);
+        } else if (checkAllBB(Move.x, oldPosition.z) != -1) {
+            Move = vector(oldPosition.x, Move.y, Move.z);
+        } else {
+            Move = oldPosition
+        }
     }
 
 
