@@ -24,6 +24,10 @@ let dirt;
 let tech1;
 let tech2;
 let tech3;
+let npesta;
+let npestapfp;
+let kenos;
+let idkman
 //We can use this to load textures or sounds
 export function preload() {
     doom = loadImage('Doom_cover_art.jpg')
@@ -46,6 +50,10 @@ export function preload() {
     tech1 = loadImage('TechTower1.png')
     tech2 = loadImage('TechTower2.png')
     tech3 = loadImage('TechTower3.png')
+    npesta = loadImage('NPESTAGIF.gif')
+    npestapfp = loadImage('npestapfp.jpg')
+    kenos = loadImage('kenos.jpg')
+    idkman = loadImage('Idkwhattonamethis.png')
 }
 
 
@@ -84,6 +92,11 @@ export function setup() {
     makeBB(-600,1200,300,300)
     makeBB(600,1200,300,300)
     makeBB(0,2550,1500,10)
+    makeBB(675,-300,50,300)
+    makeBB(650,200,150,500)
+    makeBB(0,1900,750,50)
+    makeBB(400,1825,50,200)
+    makeBB(-400,1825,50,200)
 }
 
 export function draw(t, dt) {
@@ -360,10 +373,32 @@ export function draw(t, dt) {
     translate(0,0,125)
     box(100,100,100)
     pop()
+    push()
     translate(750,-135,375)
     texture(doom)
     box(11,150,100)
-    
+    pop()
+    push()
+    translate(-750,-150,0)
+    texture(npesta)
+    rotateX(-90)
+    box(11,350,200)
+    translate(0,312,0)
+    texture(npestapfp)
+    box(11,200,200)
+    translate(0,-624,0)
+    texture(kenos)
+    box(11,200,200)
+    pop()
+    push()
+    translate(0,-100,1900)
+    texture(idkman)
+    box(750,200,50)
+    texture(stone)
+    translate(400,0,-75)
+    box(50,200,200)
+    translate(-800,0,0)
+    box(50,200,200)
     
     
     
