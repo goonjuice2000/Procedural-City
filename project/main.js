@@ -58,6 +58,11 @@ let collisionArray = []
 export function setup() {
     //put makebb fuctions here
     console.log(collisionArray.length)
+    makeBB(750,0,60,1550)
+    //makeBB(-750,0,10,1500)
+    //makeBB(0,-750,1500,10)
+   // makeBB(0,-695,500,100)
+    makeBB(600,600,350,350)
 
 }
 
@@ -356,27 +361,32 @@ export function draw(t, dt) {
     }
 
 
-    cam = createCamera()
-    cam.perspective(2 * atan(height / 2 / 800), width / height, 0.1 * 100)
-    cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 100, Move.z)
-    cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 100, Move.z + forward.z);
+
+
+    console.log(Move.minus(oldPosition).mag());
 
     //let newPosition = vector(Move.x, Move.z)
     let collision = checkAllBB(Move.x, Move.z);
     if (collision != -1) {
         console.log("Ouch!")
 
-        if (checkAllBB(oldPosition.x, Move.z) != -1) {
+        if (checkAllBB(Move.x, oldPosition.z) == -1) {
+            console.log("X Only")
             Move = vector(Move.x, Move.y, oldPosition.z);
-        } else if (checkAllBB(Move.x, oldPosition.z) != -1) {
+        } else if (checkAllBB(oldPosition.x, Move.z) == -1) {
+            console.log("Z Only")
             Move = vector(oldPosition.x, Move.y, Move.z);
         } else {
-            Move = oldPosition
+            console.log("BOTH")
+            Move = vector(oldPosition.x, oldPosition.y, oldPosition.z);
         }
     }
 
 
-
+    cam = createCamera()
+    cam.perspective(2 * atan(height / 2 / 800), width / height, 0.1 * 100)
+    cam.setPosition(Move.x, (- Math.sin(3 * t) * 6) - 100, Move.z)
+    cam.lookAt(Move.x + forward.x, (- Math.sin(3 * t) * 6) - 100, Move.z + forward.z);
 
 
 }
@@ -408,11 +418,11 @@ function checkAllBB(x, y) {
 
 function isInside(x, y, bb) {
     if (x < bb.posvec.x && x > bb.negvec.x && y < bb.posvec.y && y > bb.negvec.y) {
-        console.log('YAH')
+        //console.log('YAH')
         return true;
     }
     else {
-        console.log('NAH')
+        //console.log('NAH')
         return false;
     }
 }
