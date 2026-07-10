@@ -21,6 +21,9 @@ let skullblue;
 let skullred;
 let skullorange;
 let dirt;
+let tech1;
+let tech2;
+let tech3;
 //We can use this to load textures or sounds
 export function preload() {
     doom = loadImage('Doom_cover_art.jpg')
@@ -40,6 +43,9 @@ export function preload() {
     skullblue = loadImage('SkullBlue.png')
     skullorange = loadImage('SkullOrange.png')
     dirt = loadImage('Dirt.png')
+    tech1 = loadImage('TechTower1.png')
+    tech2 = loadImage('TechTower2.png')
+    tech3 = loadImage('TechTower3.png')
 }
 
 
@@ -58,12 +64,26 @@ let collisionArray = []
 export function setup() {
     //put makebb fuctions here
     console.log(collisionArray.length)
-    makeBB(750,0,60,1550)
-    //makeBB(-750,0,10,1500)
-    //makeBB(0,-750,1500,10)
-   // makeBB(0,-695,500,100)
-    makeBB(600,600,350,350)
-
+    makeBB(750,0,10,5000)
+    makeBB(-750,0,10,5000)
+    makeBB(0,-750,1500,10)
+    makeBB(0,-695,500,100)
+    makeBB(600,600,300,300)
+    makeBB(-600,600,300,300)
+    makeBB(-600,-600,300,300)
+    makeBB(600,-600,300,300)
+    makeBB(300,750,300,10)
+    makeBB(-300,750,300,10)
+    makeBB(150,900,10,300)
+    makeBB(-150,900,10,300)
+    makeBB(300,1050,300,10)
+    makeBB(-300,1050,300,10)
+    makeBB(0,-695,500,100)
+    makeBB(600,2400,300,300)
+    makeBB(-600,2400,300,300)
+    makeBB(-600,1200,300,300)
+    makeBB(600,1200,300,300)
+    makeBB(0,2550,1500,10)
 }
 
 export function draw(t, dt) {
@@ -321,6 +341,28 @@ export function draw(t, dt) {
     texture(skullorange)
     translate(75,0,0)
     box(50,60,11)
+    pop()
+    push()
+    texture(tech1)
+    translate(690,-100,-365)
+    box(75,200,150)
+    translate(0,0,160)
+    texture(tech2)
+    box(75,200,150)
+    translate(-25,75,400)
+    texture(rails)
+    box(150,50,500)
+    translate(0,-50,-175)
+    texture(tech3)
+    box(100,100,100)
+    translate(0,0,125)
+    box(100,100,100)
+    translate(0,0,125)
+    box(100,100,100)
+    pop()
+    translate(750,-135,375)
+    texture(doom)
+    box(11,150,100)
     
     
     
@@ -337,19 +379,19 @@ export function draw(t, dt) {
     let right = vector(v.x, 0, v.y);
 
     if (keyIsDown(65)) {
-        Move = Move.plus(right.times(-0.05));
+        Move = Move.plus(right.times(-0.075));
     }
 
     if (keyIsDown(68)) {
-        Move = Move.plus(right.times(0.05));
+        Move = Move.plus(right.times(0.075));
     }
 
     if (keyIsDown(87)) {
-        Move = Move.plus(forward.times(0.05));
+        Move = Move.plus(forward.times(0.075));
     }
 
     if (keyIsDown(83)) {
-        Move = Move.plus(forward.times(-0.05));
+        Move = Move.plus(forward.times(-0.075));
     }
 
     if (keyIsDown(RIGHT_ARROW)) {
